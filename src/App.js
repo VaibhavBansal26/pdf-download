@@ -1,11 +1,12 @@
+import React from 'react';
 import './App.css';
-import downloadComp from './Components/downloadComp';
-import { Route, Link} from 'react-router-dom'  
-import about from './Components/about';
+import DownloadComp from './Components/downloadComp';
+import { Route, Link,Routes} from 'react-router-dom'  
+import About from './Components/about';
 function App() {
   return (
     <div className="App">
-      <h1>React Router Example</h1>
+      <h1>@react-pdf/renderer with Webpack Example</h1>
       <ul>  
         <li>  
           <Link to="/">Home</Link>  
@@ -14,12 +15,14 @@ function App() {
           <Link to="/about">About</Link>  
         </li>  
         <li>  
-          <Link to="/contact">Download</Link>  
+          <Link to="/download">Download</Link>  
         </li>  
-      </ul>    
-      <Route path="/" component={App} />  
-      <Route path="/about" component={about} />  
-      <Route path="/contact" component={downloadComp} />  
+      </ul>
+      <Routes>
+      <Route path="/" />  
+      <Route path="/about" element={<About/>} />  
+      <Route path="/download" element={<DownloadComp/>} />
+      </Routes>    
     </div>
   );
 }

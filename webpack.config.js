@@ -2,15 +2,17 @@ const path = require('path');
 const webpack = require("webpack");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 
 module.exports = {
-      entry: path.join(__dirname, "src", "index.js"),
+      entry: ['babel-polyfill', './src/index.js'],
       output: {
         filename: '[name].js',
         path: __dirname + '/build',
         chunkFilename: '[id].[chunkhash].js'
       },
       mode:'development',
+      devtool: 'source-map',
       module: {
         rules: [
           {
@@ -22,6 +24,11 @@ module.exports = {
                 presets: ['@babel/preset-env', '@babel/preset-react']
               }
             }
+          },
+          {
+          test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+            exclude: /node_modules/,
+            use: ['file-loader?name=[name].[ext]']
           },
           {
             test: /\.css$/i,
@@ -48,9 +55,14 @@ module.exports = {
             },
           },
           plugins: [
+            new InterpolateHtmlPlugin({
+              PUBLIC_URL: 'static' // can modify `static` to another name or get it from `process`
+          }),
             new HtmlWebpackPlugin({
               template:'./public/index.html',
-              filename:'./index.html'
+              filename:'./index.html',
+              favicon: './public/favicon.ico',
+              manifest: './public/manifest.json'
             }),
             new webpack.ProvidePlugin({
               Buffer: ["buffer", "Buffer"],
